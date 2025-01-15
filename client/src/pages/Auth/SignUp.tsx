@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
-import { useDispatch } from 'react-redux';
-import { register } from '../../features/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import { AppDispatch, RootState } from '../../app/store';
+import { register } from '../../features/userSlice';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +14,7 @@ const SignUp: React.FC = () => {
   });
   const { loading, error } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,6 +27,10 @@ const SignUp: React.FC = () => {
       return;
     }
     dispatch(register({ username: formData.username, email: formData.email, password: formData.password }));
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
   };
 
   return (
@@ -78,6 +83,16 @@ const SignUp: React.FC = () => {
         sx={{ mt: 2 }}
       >
         {loading ? <CircularProgress size={24} /> : 'Sign Up'}
+      </Button>
+      <Button
+        fullWidth
+        variant="contained"
+        color="warning"
+        onClick={handleLogin}
+        disabled={loading}
+        sx={{ mt: 2 }}
+      >
+        Login
       </Button>
     </Box>
   );

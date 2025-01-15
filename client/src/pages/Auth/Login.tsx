@@ -27,6 +27,10 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleSignup = () => {
+    navigate('/sign-up');
+  };
+
   return (
     <Box component="form" noValidate>
       <TextField
@@ -60,6 +64,17 @@ const Login: React.FC = () => {
         sx={{ mt: 2 }}
       >
         {loading ? <CircularProgress size={24} /> : 'Login'}
+      </Button>
+      <Button
+        fullWidth
+        variant="contained"
+        color="error"
+        onClick={handleSignup}
+        disabled={loading}
+        sx={{ mt: 2 }}
+      >
+        Signup
+      
       </Button>
     </Box>
   )

@@ -12,15 +12,18 @@ import SignUp from './pages/Auth/SignUp';
 import TodoPage from './pages/Todo/TodoPage';
 import routes from './router/routes';
 import ProtectedRoute from './router/ProtectedRoute';
+import PublicRoute from './router/PublicRoute';
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
         {/* Authentication Routes */}
-        <Route element={<AuthLayout />}>
-          <Route path={routes.login} element={<Login />} />
-          <Route path={routes.signUp} element={<SignUp />} />
+        <Route element={<PublicRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/sign-up" element={<SignUp />} />
+          </Route>
         </Route>
 
         {/* Todo Routes */}

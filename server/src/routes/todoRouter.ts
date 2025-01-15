@@ -17,13 +17,13 @@ todoRouter.post(
 );
 
 todoRouter.put(
-  "/:id",
+  "/:uuid",
   TodoValidator.updateValidator(),
   TodoController.updateController,
 );
 
-todoRouter.post(
-  "/:id",
+todoRouter.delete(
+  "/:uuid",
   TodoValidator.deleteValidator(),
   TodoController.deleteController,
 );

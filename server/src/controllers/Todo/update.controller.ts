@@ -4,7 +4,7 @@ import { errorHandlerWrapper } from "../../utils";
 
 const updateHandler = async (req, res) => {
   const { uuid } = req.params;
-  const { title, description, status, dueDate } = req.data;
+  const { title, description, status, dueDate } = req.body;
   const updatedTodo = await todoService.updateTodo({
     uuid,
     title,

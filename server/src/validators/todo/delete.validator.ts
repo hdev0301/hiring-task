@@ -2,7 +2,7 @@ import { param } from "express-validator";
 
 export const deleteValidator = () => {
   return [
-    param("id")
+    param("uuid")
       .notEmpty()
       .withMessage("UUID is required."),
   ];

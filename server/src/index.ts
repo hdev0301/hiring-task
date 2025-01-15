@@ -30,8 +30,9 @@ const setupServer = async () => {
 
   const { port } = Env;
 
-  app.listen(port, () => {
-    console.log(`Server is listening on ${port}.`);
+  const PORT = process.env.PORT || 3001; // Change 3001 to any unused port
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   });
 };
 

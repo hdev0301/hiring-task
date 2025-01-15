@@ -6,7 +6,7 @@ import { RootState } from "../app/store";
 const PublicRoute: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.users);
 
-  return currentUser ? <Navigate to="/todos" replace /> : <Outlet />;
+  return currentUser?.token ? <Navigate to="/todos" replace /> : <Outlet />;
 };
 
 export default PublicRoute;

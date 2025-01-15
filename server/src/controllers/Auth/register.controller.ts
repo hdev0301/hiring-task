@@ -13,7 +13,7 @@ const registerHandler = async (req, res) => {
     password: hashPassword,
   });
 
-  res.json({ user }).status(httpStatus.CREATED);
+  res.json({ username, email }).status(httpStatus.CREATED);
 };
 
 export const registerController = errorHandlerWrapper(registerHandler);

@@ -6,7 +6,7 @@ import { RootState } from "../app/store";
 const ProtectedRoute: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.users);
 
-  if (!currentUser) {
+  if (!currentUser || !currentUser.token) {
     return <Navigate to="/login" replace />;
   }
 

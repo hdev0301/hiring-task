@@ -29,7 +29,8 @@ const SignUp: React.FC = () => {
     dispatch(register({ username: formData.username, email: formData.email, password: formData.password }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
     navigate('/login');
   };
 
@@ -88,7 +89,7 @@ const SignUp: React.FC = () => {
         fullWidth
         variant="contained"
         color="warning"
-        onClick={handleLogin}
+        onClick={(e: React.FormEvent) => handleLogin(e)}
         disabled={loading}
         sx={{ mt: 2 }}
       >

@@ -14,8 +14,6 @@ import {
 } from "@mui/material";
 import {
   Logout as LogoutIcon,
-  AccountCircle as AccountCircleIcon,
-  Settings as SettingsIcon,
 } from "@mui/icons-material";
 import { logout } from "../features/userSlice";
 

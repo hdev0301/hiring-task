@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Box, Container, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 const AuthLayout: React.FC = () => {
   return (

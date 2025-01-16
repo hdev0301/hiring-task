@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { store } from '../app/store';
 
 // Read environment variables
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api/v1';
@@ -20,13 +21,16 @@ API.interceptors.response.use(
   }
 );
 
-// Attach Authorization header if token is available
-// API.interceptors.request.use((config) => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+API.interceptors.request.use((config) => {
+  // Get the token from Redux Toolkit's `users` slice
+  const token = store.getState().users.currentUser?.token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  // Handle request error
+  return Promise.reject(error);
+});
 
 export default API;

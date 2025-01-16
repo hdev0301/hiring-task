@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import { login } from '../../features/userSlice';
 import { AppDispatch, RootState } from '../../app/store';
-import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({ email: '', password: '' });
   const { loading, error } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -14,9 +15,35 @@ const Login: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Clear error for the field being edited
+    setErrors({ ...errors, [name]: '' });
+  };
+
+  const validateForm = () => {
+    const newErrors = { email: '', password: '' };
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Invalid email format.';
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required.';
+    }
+
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return !Object.values(newErrors).some((error) => error !== '');
   };
 
   const handleLogin = async () => {
+    if (!validateForm()) return;
+
     try {
       const result = await dispatch(login(formData));
       if (login.fulfilled.match(result)) {
@@ -40,6 +67,8 @@ const Login: React.FC = () => {
         value={formData.email}
         onChange={handleChange}
         margin="normal"
+        error={!!errors.email}
+        helperText={errors.email}
       />
       <TextField
         fullWidth
@@ -49,9 +78,11 @@ const Login: React.FC = () => {
         value={formData.password}
         onChange={handleChange}
         margin="normal"
+        error={!!errors.password}
+        helperText={errors.password}
       />
       {error && (
-        <Typography color="error">
+        <Typography color="error" sx={{ mt: 1 }}>
           {error.message}
         </Typography>
       )}
@@ -74,7 +105,7 @@ const Login: React.FC = () => {
         sx={{ mt: 2 }}
       >
         Signup
-      
+
       </Button>
     </Box>
   )

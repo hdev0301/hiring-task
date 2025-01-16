@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   AppBar,
   Toolbar,
@@ -11,11 +11,11 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Logout as LogoutIcon,
-} from "@mui/icons-material";
-import { logout } from "../features/userSlice";
+} from '@mui/icons-material';
+import { logout } from '../features/userSlice';
 
 const TodoLayout: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

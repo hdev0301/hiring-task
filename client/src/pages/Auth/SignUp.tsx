@@ -12,6 +12,12 @@ const SignUp: React.FC = () => {
     password: '',
     confirmPassword: '',
   });
+  const [errors, setErrors] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
   const { loading, error } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -19,14 +25,56 @@ const SignUp: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Clear error for the  field on change
+    setErrors({ ...errors, [name]: '' });
   };
 
-  const handleSubmit = () => {
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
-      return;
+  const validateForm = () => {
+    const newErrors = {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    };
+
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required.';
     }
-    dispatch(register({ username: formData.username, email: formData.email, password: formData.password }));
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Invalid email format.';
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required.';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters.';
+    }
+
+    // Confirm Password validation
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Confirm password is required.';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match.';
+    }
+
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return !Object.values(newErrors).some((error) => error !== '');
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    await dispatch(register({ username: formData.username, email: formData.email, password: formData.password }));
+    navigate('/login');
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -43,6 +91,8 @@ const SignUp: React.FC = () => {
         value={formData.username}
         onChange={handleChange}
         margin="normal"
+        error={!!errors.username}
+        helperText={errors.username}
       />
       <TextField
         fullWidth
@@ -51,6 +101,8 @@ const SignUp: React.FC = () => {
         value={formData.email}
         onChange={handleChange}
         margin="normal"
+        error={!!errors.email}
+        helperText={errors.email}
       />
       <TextField
         fullWidth
@@ -60,6 +112,8 @@ const SignUp: React.FC = () => {
         value={formData.password}
         onChange={handleChange}
         margin="normal"
+        error={!!errors.password}
+        helperText={errors.password}
       />
       <TextField
         fullWidth
@@ -69,6 +123,8 @@ const SignUp: React.FC = () => {
         value={formData.confirmPassword}
         onChange={handleChange}
         margin="normal"
+        error={!!errors.confirmPassword}
+        helperText={errors.confirmPassword}
       />
       {error && (
         <Typography color="error">

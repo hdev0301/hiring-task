@@ -21,16 +21,42 @@ const TodoPage: React.FC = () => {
   const { todos, loading, error } = useSelector((state: RootState) => state.todos);
 
   const [newTodo, setNewTodo] = useState({ title: '', description: '', dueDate: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewTodo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    // Clear error when the user starts changing the input value
+    if (errorMessage) setErrorMessage('');
+  };
+
   const handleAddTodo = async () => {
-    if (newTodo.title) {
+    if (!newTodo.title) {
+      setErrorMessage('Title is required.');
+      return;
+    }
+
+    if (!newTodo.dueDate) {
+      setErrorMessage('Due date is required.');
+      return;
+    }
+
+    try {
       await dispatch(createTodo(newTodo));
       setNewTodo({ title: '', description: '', dueDate: '' });
+      setErrorMessage('');
       await dispatch(fetchTodos());
+    } catch (error) {
+      console.error('Error adding todo:', error);
+      setErrorMessage('Error adding todo');
     }
   };
 
@@ -43,9 +69,9 @@ const TodoPage: React.FC = () => {
     try {
       await dispatch(deleteTodo(id));
       window.location.reload();
-      // await dispatch(fetchTodos());
     } catch (error) {
       console.error('Error deleting or fetching todos:', error);
+      setErrorMessage('Error deleting todo');
     }
   };
 
@@ -58,24 +84,31 @@ const TodoPage: React.FC = () => {
       <Box marginBottom={4}>
         <TextField
           label="Title"
+          name="title"
           value={newTodo.title}
-          onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
+          onChange={handleChange}
           fullWidth
+          error={!!errorMessage}
+          helperText={errorMessage}
         />
         <TextField
           label="Description"
+          name="description"
           value={newTodo.description}
-          onChange={(e) => setNewTodo({ ...newTodo, description: e.target.value })}
+          onChange={handleChange}
           fullWidth
           margin="normal"
         />
         <TextField
           label="Due Date"
           type="date"
+          name="dueDate"
           value={newTodo.dueDate}
-          onChange={(e) => setNewTodo({ ...newTodo, dueDate: e.target.value })}
+          onChange={handleChange}
           fullWidth
           InputLabelProps={{ shrink: true }}
+          error={!!errorMessage}
+          helperText={errorMessage && !newTodo.dueDate ? 'Due date is required.' : ''}
         />
         <Button
           fullWidth

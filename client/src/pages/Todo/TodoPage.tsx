@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { AppDispatch, RootState } from '../../app/store';
+import { RootState } from '../../app/store';
 import {
   fetchTodos,
   createTodo,
@@ -17,7 +17,7 @@ import {
 } from '../../features/todoSlice';
 
 const TodoPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: any = useDispatch();
   const { todos, loading, error } = useSelector((state: RootState) => state.todos);
 
   const [newTodo, setNewTodo] = useState({ title: '', description: '', dueDate: '' });

@@ -59,7 +59,7 @@ export const updateTodo = createAsyncThunk(
   }
 );
 
-export const deleteTodo = createAsyncThunk(
+export const deleteTodo = createAsyncThunk<string, string>(
   'todos/deleteTodo',
   async (id: string, { rejectWithValue }) => {
     try {

@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import { login } from '../../features/userSlice';
-import { AppDispatch, RootState } from '../../app/store';
+import { RootState } from '../../app/store';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({ email: '', password: '' });
   const { loading, error } = useSelector((state: RootState) => state.users);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
-import { AppDispatch, RootState } from '../../app/store';
+import { RootState } from '../../app/store';
 import { register } from '../../features/userSlice';
 
 const SignUp: React.FC = () => {
@@ -19,7 +19,7 @@ const SignUp: React.FC = () => {
     confirmPassword: '',
   });
   const { loading, error } = useSelector((state: RootState) => state.users);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

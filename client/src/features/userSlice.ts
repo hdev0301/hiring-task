@@ -54,6 +54,7 @@ const userSlilce = createSlice({
   reducers: {
     logout: (state) => {
       state.currentUser = null;
+      window.location.href = '/login';
     },
   },
   extraReducers: (builder) => {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { store } from '../app/store';
+import { logout } from '../features/userSlice';
 
 // Read environment variables
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api/v1';
@@ -17,6 +18,9 @@ const API = axios.create({
 API.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.response?.status === 401) {
+      store.dispatch(logout());
+    }
     return Promise.reject(error.response?.data || 'Something went wrong');
   }
 );

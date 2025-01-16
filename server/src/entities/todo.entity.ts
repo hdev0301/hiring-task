@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CoreEntity } from "./core.entity";  // Assuming CoreEntity contains common fields like createdAt, updatedAt, etc.
+import { UserEntity } from "./user.entity";
 
 @Entity("todo")
 export class TodoEntity extends CoreEntity {
@@ -17,4 +18,7 @@ export class TodoEntity extends CoreEntity {
 
   @Column({ type: "date", nullable: true, name: "due_date" })  // Set custom column name "due_date"
   dueDate: Date | null;  // Due date, an optional Date field.
+
+  @ManyToOne(() => UserEntity, (user) => user.todos, { onDelete: 'CASCADE' })
+  user: UserEntity;
 }

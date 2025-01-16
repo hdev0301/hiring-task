@@ -41,8 +41,9 @@ const TodoPage: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await dispatch(deleteTodo(id)).unwrap(); // Ensure action resolves or throws an error
-      await dispatch(fetchTodos()).unwrap();  // Re-fetch todos to refresh the state
+      await dispatch(deleteTodo(id));
+      window.location.reload();
+      // await dispatch(fetchTodos());
     } catch (error) {
       console.error('Error deleting or fetching todos:', error);
     }

@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   password: Env.password,
   port: Env.dbPort,
   logging: false,
-  synchronize: false,
+  synchronize: true, // Use only in development, not in production
   entities: [UserEntity, TodoEntity],
   entitySkipConstructor: true,
   namingStrategy: new SnakeNamingStrategy(),

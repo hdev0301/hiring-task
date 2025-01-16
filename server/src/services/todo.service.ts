@@ -7,9 +7,14 @@ import { AppDataSource } from "../db";
  * @returns new todo item
  */
 export const createTodo = async (data) => {
-  const { title, description, status, dueDate } = data;
+  const { title, description, status, dueDate, user } = data;
   const todoRepository = AppDataSource.getRepository(TodoEntity);
-  const newTodo = todoRepository.create({ title, description, status, dueDate });
+  const newTodo = new TodoEntity();
+  newTodo.title = title;
+  newTodo.description = description;
+  newTodo.status = status;
+  newTodo.dueDate = dueDate;
+  newTodo.user = user;
   await todoRepository.save(newTodo);
   return newTodo;
 };
@@ -18,9 +23,11 @@ export const createTodo = async (data) => {
  * Get All Todos
  * @returns all todo items
  */
-export const getTodos = async () => {
+export const getTodos = async (user) => {
   const todoRepository = AppDataSource.getRepository(TodoEntity);
-  const todos = await todoRepository.find();
+  const todos = await todoRepository.find({
+    where: { user: { uuid: user.uuid }}
+  });
   return todos || [];
 };
 
@@ -47,11 +54,12 @@ export const getTodoById = async (data) => {
  * @returns the updated todo item
  */
 export const updateTodo = async (data) => {
-  const { uuid } = data;
-  const { title, description, status, dueDate } = data;
+  const { uuid, title, description, status, dueDate, user } = data;
 
   const todoRepository = AppDataSource.getRepository(TodoEntity);
-  const todo = await todoRepository.findOneBy({ uuid });
+  const todo = await todoRepository.findOne({
+    where: { uuid: uuid, user: { uuid: user.uuid }},
+  });
 
   if (!todo) return null;
 
@@ -70,10 +78,12 @@ export const updateTodo = async (data) => {
  * @returns the removed todo item
  */
 export const deleteTodo = async (data) => {
-  const { uuid } = data;
+  const { uuid, user } = data;
 
   const todoRepository = AppDataSource.getRepository(TodoEntity);
-  const todo = await todoRepository.findOneBy({ uuid });
+  const todo = await todoRepository.findOne({
+    where: { uuid: uuid, user: { uuid: user.uuid } },
+  });
 
   if (!todo) return null;
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authRouter } from "./authRouter";
 import { todoRouter } from "./todoRouter";
+import { checkAuth } from "../utils";
 
 export const appRouter = Router();
 
@@ -8,4 +9,4 @@ export const appRouter = Router();
 appRouter.use("/auth", authRouter);
 
 // Todo routes
-appRouter.use("/todos", todoRouter);
+appRouter.use("/todos", checkAuth, todoRouter);

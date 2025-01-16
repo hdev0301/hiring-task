@@ -73,7 +73,13 @@ const SignUp: React.FC = () => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    await dispatch(register({ username: formData.username, email: formData.email, password: formData.password }));
+    await dispatch(
+      register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      })
+    );
     navigate('/login');
   };
 
